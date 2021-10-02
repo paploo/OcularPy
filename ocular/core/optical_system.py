@@ -1,3 +1,5 @@
+from ocular.core.DiffractionLimitParameter import DiffractionLimitParameter
+
 
 class OpticalSystem:
 
@@ -21,35 +23,26 @@ class OpticalSystem:
     def true_angle_of_view(self):
         return self.eyepiece.apparent_angle_of_view / self.magnification
 
-    def magnification_minmax(self,
-                             max_pupil_diameter=7.0,
-                             atmospheric_magnification_limit=300.0,
-                             eye_maximum_resolution_arcseconds=116.0):
+    def magnification_min(self, max_pupil_diameter=7.0):
+        return self.telescope.objective_diameter / max_pupil_diameter
+
+    def magnification_max(self,
+                          atmospheric_magnification_limit=300.0,
+                          diffraction_limit_parameter=DiffractionLimitParameter.COMMON,
+                          eye_maximum_resolution_arcseconds=120.0):
         """
-        Returns a tuple of the minimum and maximum magnifications for the system.
-
-        The min is determined by the maximum pupil diameter.
-
-        The max is determined by when the dawes limit of the telescope is magnified to match the eye's resolution.
-        In other words, when  dawes_limit * M = eye_res.
-
-        Note that in common calculations, the eye's resolution is taken to be the same as the parameter for the dawes limit,
-        effectively giving the magnification that matches the telescope objective diameter in millimeters!
-
-        :param max_pupil_diameter: The maximum diameter of the viewer's dark-adjusted pupil.
-        :param atmospheric_magnification_limit: The maximum magnification allowed by atmospheric conditions.
-        :param eye_maximum_resolution_arcseconds: The smallest angle the eye is able to resolve. For the classical approximation, use the dawes limit parameter of 116.
-        :return:
+        Returns the maximum useful magnification of this optical system.
+        :param atmospheric_magnification_limit: The maximum magnification the atmosphere will allow.
+        :param diffraction_limit_parameter: The resolution parameter used to calculate the diffraction limit.
+        :param eye_maximum_resolution_arcseconds: The maximum resolution of the viewer's eye in arc-seconds.
+        :return: The maximum magnification.
         """
-        return (self.telescope.objective_diameter / max_pupil_diameter,
-                eye_maximum_resolution_arcseconds / self.telescope.dawes_limit_arcseconds)
+        return eye_maximum_resolution_arcseconds / self.telescope.resolving_power_arcseconds(diffraction_limit_parameter)
 
-    def image_resolution_arcseconds(self, limit_parameter=116.0):
+    def image_resolution_arcseconds(self, eye_maximum_resolution_arcseconds=120.0):
         """
-        Returns the smallest angle resolvable by the normal human eye.
+        Returns the smallest angle resolvable by the normal human eye for the system.
 
-        This uses the Dawes Limit numerator of 116 for resolution calculation.
-
-        :param limit_parameter: 116 for the Dawes Limit, 120 for standard approximation, 138.4 for Rayleigh @ 550nm
+        This is determined by determining what angular size, when magnified, would be the viewer's resolution limit.
         """
-        return limit_parameter / self.magnification
+        return 120.0 / self.magnification
