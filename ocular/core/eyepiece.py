@@ -1,5 +1,14 @@
 from enum import Enum
 import math
+import ocular.core.manufacturer as manf
+
+
+class BarrelSize(Enum):
+    ONE_AND_A_QUARTER_INCH = 31.75
+    TWO_INCH = 50.80
+
+    def __init__(self, diameter):
+        self.diameter = diameter
 
 
 class Eyepiece:
@@ -11,8 +20,10 @@ class Eyepiece:
                  barrel_size,
                  field_stop_diameter=None,
                  eye_relief=None,
+                 series=None,
                  mass=None):
         self.manufacturer = manufacturer
+        self.series = series
         self.focal_length = focal_length
         self.apparent_field_of_view = apparent_field_of_view
         self.barrel_size = barrel_size
@@ -43,10 +54,50 @@ class Eyepiece:
         """
         return 2.0 * math.atan(0.5 * (self.field_stop_diameter / self.focal_length))
 
+    @classmethod
+    def widest(cls,
+               focal_length,
+               barrel_size=BarrelSize.ONE_AND_A_QUARTER_INCH,
+               wall_thickness=2.0):
+        """
+        Creates a generic eyepiece of the given focal length, with the maximum field-of-view available for the barrel size.
+        :param focal_length: The target focal length in millimeters.
+        :param barrel_size: The barrel size for this eyepiece (BarrelSize enum).
+        :param wall_thickness: The wall thickness of the eyepiece; limits the space for the stop size
+        :return: A generic eyepiece, idealized to the widest afov.
+        """
+        desired_stop_diameter = barrel_size.diameter - 2.0 * wall_thickness
+        stop_diameter = max(desired_stop_diameter, 0.0)
+        afov = math.degrees(stop_diameter / focal_length)
+        return cls(manf.generic,
+                   focal_length,
+                   afov,
+                   barrel_size,
+                   field_stop_diameter=stop_diameter)
 
-class BarrelSize(Enum):
-    ONE_AND_A_QUARTER_INCH = 31.75
-    TWO_INCH = 50.80
+    @classmethod
+    def generic(cls,
+                focal_length,
+                target_apparent_field_of_view,
+                barrel_size=BarrelSize.ONE_AND_A_QUARTER_INCH,
+                wall_thickness=2.0):
+        """
+        Creates a generic eyepiece of the given focal length and apparent field of view.
 
-    def __init__(self, diameter):
-        self.diameter = diameter
+        If the barrel size doesn't allow the eyepiece to exist, then the field of view is automatically constrained.
+
+        :param focal_length: The focal length in millimeters
+        :param target_apparent_field_of_view: The apparent field of view in degrees
+        :param barrel_size: The barrels size (enum value)
+        :param wall_thickness: The thickness of the wall; limits the space for the stop.
+        :return: The generic eyepiece.
+        """
+        desired_stop_diameter = math.radians(target_apparent_field_of_view) * focal_length
+        max_stop_diameter = barrel_size.diameter - 2.0 * wall_thickness
+        stop_diameter = min(desired_stop_diameter, max_stop_diameter)
+        afov = math.degrees(stop_diameter / focal_length)
+        return cls(manf.generic,
+                   focal_length,
+                   afov,
+                   barrel_size,
+                   field_stop_diameter=stop_diameter)

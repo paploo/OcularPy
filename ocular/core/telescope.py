@@ -1,4 +1,4 @@
-from ocular.core.DiffractionLimitParameter import DiffractionLimitParameter
+import ocular.core.diffraction_limit_parameter as dlp
 
 
 class Telescope:
@@ -17,7 +17,7 @@ class Telescope:
 
     @property
     def dawes_limit_arcseconds(self):
-        return self.resolving_power_arcseconds(DiffractionLimitParameter.DAWES)
+        return self.resolving_power_arcseconds(dlp.DAWES)
 
     def resolving_power_arcseconds(self, diffraction_limit_parameter):
         return diffraction_limit_parameter / self.objective_diameter
