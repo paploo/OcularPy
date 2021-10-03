@@ -4,23 +4,25 @@ import ocular.core.manufacturer as manf
 
 
 class BarrelSize(Enum):
-    ONE_AND_A_QUARTER_INCH = 31.75
-    TWO_INCH = 50.80
+    ONE_AND_A_QUARTER_INCH = ('1.25"', 31.75)
+    TWO_INCH = ('2"', 50.80)
 
-    def __init__(self, diameter):
+    def __init__(self, label, diameter):
+        self.label = label
         self.diameter = diameter
+
 
 
 class Eyepiece:
 
     def __init__(self,
                  manufacturer,
+                 series,
                  focal_length,
                  apparent_field_of_view,
                  barrel_size,
                  field_stop_diameter=None,
                  eye_relief=None,
-                 series=None,
                  mass=None):
         self.manufacturer = manufacturer
         self.series = series
@@ -53,6 +55,9 @@ class Eyepiece:
         :return: The apparent field of view in degrees
         """
         return 2.0 * math.atan(0.5 * (self.field_stop_diameter / self.focal_length))
+
+    def __str__(self):
+        return f"{self.manufacturer.code} {self.series} {self.focal_length}mm {self.apparent_field_of_view}° {self.barrel_size.label}"
 
     @classmethod
     def widest(cls,

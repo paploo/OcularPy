@@ -59,3 +59,6 @@ class OpticalSystem:
         This is determined by determining what angular size, when magnified, would be the viewer's resolution limit.
         """
         return 120.0 / self.magnification
+
+    def __str__(self):
+        return f"OpticalSystem(telescope={self.telescope}, eyepiece={self.eyepiece})"
