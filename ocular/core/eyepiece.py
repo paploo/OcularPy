@@ -1,6 +1,7 @@
 from enum import Enum
 import math
 import ocular.core.manufacturer as manf
+from ocular.util.tools import codeize
 
 
 class BarrelSize(Enum):
@@ -34,6 +35,29 @@ class Eyepiece:
         self.mass = mass
 
     @property
+    def code(self):
+        """
+        Returns an alphanumeric identifier that can be used to identify this eyepiece from a library.
+
+        This is derived from its data.
+        """
+        parts = [
+            self.manufacturer.code,
+            codeize(self.series),
+            '{:g}'.format(self.focal_length),
+            '{:.0f}'.format(self.apparent_field_of_view),
+            self.barrel_size.label.replace('"', '')
+        ]
+        return "-".join(parts)
+
+    @property
+    def label(self):
+        """
+        A nice humanized label/name.
+        """
+        return f"{self.manufacturer.code} {self.series} {self.focal_length}mm {self.apparent_field_of_view}° {self.barrel_size.label}"
+
+    @property
     def stop_afov(self):
         """
         Calculates the AFoV from the stop diameter using the most common method.
@@ -57,7 +81,7 @@ class Eyepiece:
         return 2.0 * math.atan(0.5 * (self.field_stop_diameter / self.focal_length))
 
     def __str__(self):
-        return f"{self.manufacturer.code} {self.series} {self.focal_length}mm {self.apparent_field_of_view}° {self.barrel_size.label}"
+        return self.label
 
     @classmethod
     def widest(cls,

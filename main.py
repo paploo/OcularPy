@@ -4,12 +4,14 @@ from ocular.equipment import sample_loader
 
 
 def main():
-    p = Path('./equipment/eyepieces.csv')
-    eyepieces = csv_loader.load_eyepieces(p)
-    print([str(e) for e in eyepieces])
+    eyepiece_lib = csv_loader.load_eyepiece_library(Path('./equipment/eyepieces.csv'))
+    print(eyepiece_lib)
 
-    telescopes = sample_loader.load_telescopes(None)
-    print([str(t) for t in telescopes])
+    telescopes = csv_loader.load_telescope_library(Path('./equipment/telescopes.csv'))
+    print(telescopes)
+
+    favorites = csv_loader.load_favorites_library(Path('./equipment/favorites.csv'))
+    print(favorites)
 
 
 if __name__ == '__main__':
