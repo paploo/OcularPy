@@ -35,15 +35,3 @@ class Library:
         return cls(name,
                    kind,
                    {item.code: item for item in items})
-
-
-class Favorites:
-
-    def __init__(self, code, name, kind, codes):
-        self.code = code
-        self.name = name
-        self.kind = kind
-        self.codes = codes
-
-    def __str__(self):
-        return f"Favorites(name='{self.name}', kind={self.kind.name}, codes={self.codes})"

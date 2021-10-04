@@ -1,7 +1,8 @@
 from ocular.core.manufacturer import Manufacturer
 from ocular.core.telescope import Telescope
 from ocular.core.eyepiece import Eyepiece, BarrelSize
-from ocular.equipment.library import Favorites, CatalogKind, Library
+from ocular.equipment.favorites import Favorites
+from ocular.equipment.library import CatalogKind, Library
 
 televue = Manufacturer('TV', 'TeleVue')
 explore = Manufacturer('ES', 'Explore Scientific')

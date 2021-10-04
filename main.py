@@ -1,3 +1,4 @@
+from functools import reduce
 from pathlib import Path
 from ocular.equipment import csv_loader
 from ocular.equipment import sample_loader
@@ -12,6 +13,9 @@ def main():
 
     favorites = csv_loader.load_favorites_library(Path('./equipment/favorites.csv'))
     print(favorites)
+
+    all_favs = reduce(lambda a, b: a + b, favorites.catalog.values())
+    print(all_favs)
 
 
 if __name__ == '__main__':

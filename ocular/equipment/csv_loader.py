@@ -5,7 +5,8 @@ from itertools import groupby
 from ocular.core.eyepiece import Eyepiece, BarrelSize
 from ocular.core.manufacturer import Manufacturer
 from ocular.core.telescope import Telescope
-from ocular.equipment.library import Library, CatalogKind, Favorites
+from ocular.equipment.favorites import Favorites
+from ocular.equipment.library import Library, CatalogKind
 from ocular.util.tools import map_optional
 
 
