@@ -24,7 +24,7 @@ class Telescope:
         return f"{self.manufacturer.code}-{codeize(self.model)}"
 
     @property
-    def label(self):
+    def name(self):
         return f"{self.code}[{self.manufacturer.code} {self.model} f/{self.focal_ratio:.1f} {self.objective_diameter:.0f}mm]"
 
 
@@ -40,4 +40,4 @@ class Telescope:
         return diffraction_limit_parameter / self.objective_diameter
 
     def __str__(self):
-        return self.label
+        return self.name

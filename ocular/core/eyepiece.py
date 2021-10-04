@@ -51,9 +51,9 @@ class Eyepiece:
         return "-".join(parts)
 
     @property
-    def label(self):
+    def name(self):
         """
-        A nice humanized label/name.
+        A nice humanized name.
         """
         return f"{self.manufacturer.code} {self.series} {self.focal_length}mm {self.apparent_field_of_view}° {self.barrel_size.label}"
 
@@ -81,7 +81,7 @@ class Eyepiece:
         return 2.0 * math.atan(0.5 * (self.field_stop_diameter / self.focal_length))
 
     def __str__(self):
-        return self.label
+        return self.name
 
     @classmethod
     def widest(cls,
