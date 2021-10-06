@@ -58,5 +58,17 @@ class Telescope:
         return eye_maximum_resolution_arcseconds / self.resolving_power_arcseconds(
             diffraction_limit_parameter)
 
+    def magnification_for_eyepeice_focal_length(self, eyepiece_focal_length):
+        return self.focal_length / eyepiece_focal_length
+
+    def eyepiece_focal_length_for_magnification(self, magnification):
+        return self.focal_length / magnification
+
+    def exit_pupil_for_eyepiece_focal_length(self, eyepiece_focal_length):
+        return eyepiece_focal_length / self.focal_ratio
+
+    def eyepiece_focal_length_for_exit_pupil(self, exit_pupil):
+        return exit_pupil * self.focal_ratio
+
     def __str__(self):
         return self.name

@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from ocular.core.eyepiece import Eyepiece, degrees_to_arcseconds, arcseconds_to_degrees, BarrelSize
-from ocular.core.optical_system import OpticalSystem, focal_length_to_exit_pupil, exit_pupil_to_focal_length
+from ocular.core.optical_system import OpticalSystem
 
 
 def make_plot(ax, telescope, eyepieces):
@@ -17,7 +17,8 @@ def xaxis_as_focal_length(ax, telescope):
     ax.set_xlim([0, 40])
     ax.set_xlabel(r'$f_L$ (mm)')
 
-    sec_ax_functions = (curry(focal_length_to_exit_pupil)(telescope), exit_pupil_to_focal_length(telescope))
+    # sec_ax_functions = (curry(focal_length_to_exit_pupil)(telescope), exit_pupil_to_focal_length(telescope))
+    sec_ax_functions = (telescope.exit_pupil_for_eyepiece_focal_length, telescope.eyepiece_focal_length_for_exit_pupil)
     sec_ax = ax.secondary_xaxis('top', functions=sec_ax_functions)
     sec_ax.set_xlabel('$D_{ep}$ (mm)')
 
@@ -25,11 +26,6 @@ def xaxis_as_focal_length(ax, telescope):
 def yaxis_as_field_of_view(ax, telescope):
     ax.set_ylim([0, 120])
     ax.set_ylabel(r'$\theta_{ep}$ (degrees)')
-
-    #TODO: This should be a true-field-of-view axis.
-    #sec_ax_functions = (degrees_to_arcseconds, arcseconds_to_degrees)
-    #sec_ax = ax.secondary_yaxis('right', functions=sec_ax_functions)
-    #sec_ax.set_ylabel(r'$\theta_{ep}$ (arcseconds)')
 
 
 def scatter_field_of_view(ax, telescope, eyepieces):
@@ -45,9 +41,9 @@ def scatter_field_of_view(ax, telescope, eyepieces):
                     xytext=(0, 10),
                     ha='center')
 
+
 def min_focal_length_line(ax, telescope):
     # TODO: Make this work!
-    #min_fl = optical_system.magnification_to_focal_length(telescope.min_magnification())
     pass
 
 
