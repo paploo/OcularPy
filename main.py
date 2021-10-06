@@ -4,7 +4,7 @@ from ocular.equipment import csv_loader
 from ocular.equipment import sample_loader
 import matplotlib.pyplot as plt
 
-from ocular.viz import field_of_view_viz
+from ocular.viz import apparent_field_of_view_viz
 
 
 def main():
@@ -25,7 +25,7 @@ def main():
     eyepieces = eyepiece_lib.filter_favorites(all_favs).catalog.values()
 
     fig, ax = plt.subplots()
-    field_of_view_viz.make_plot(ax, telescope, eyepieces)
+    apparent_field_of_view_viz.make_plot(ax, telescope, eyepieces)
     plt.show()
 
 
