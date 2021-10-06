@@ -21,10 +21,11 @@ def main():
     print(all_favs)
 
     telescope = telescopes.catalog['ORI-XX12G']
+    #telescope = telescopes.catalog['APR-AD8']
     eyepieces = eyepiece_lib.filter_favorites(all_favs).catalog.values()
 
     fig, ax = plt.subplots()
-    field_of_view_viz.make_plot(ax, telescopes.catalog['ORI-XX12G'], eyepieces)
+    field_of_view_viz.make_plot(ax, telescope, eyepieces)
     plt.show()
 
 
