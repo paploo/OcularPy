@@ -84,49 +84,45 @@ class Eyepiece:
         return self.name
 
     @classmethod
-    def widest(cls,
-               focal_length,
-               barrel_size=BarrelSize.ONE_AND_A_QUARTER_INCH,
-               wall_thickness=2.0):
-        """
-        Creates a generic eyepiece of the given focal length, with the maximum field-of-view available for the barrel size.
-        :param focal_length: The target focal length in millimeters.
-        :param barrel_size: The barrel size for this eyepiece (BarrelSize enum).
-        :param wall_thickness: The wall thickness of the eyepiece; limits the space for the stop size
-        :return: A generic eyepiece, idealized to the widest afov.
-        """
-        desired_stop_diameter = barrel_size.diameter - 2.0 * wall_thickness
-        stop_diameter = max(desired_stop_diameter, 0.0)
-        afov = math.degrees(stop_diameter / focal_length)
-        return cls(manf.generic,
-                   focal_length,
-                   afov,
-                   barrel_size,
-                   field_stop_diameter=stop_diameter)
-
-    @classmethod
     def generic(cls,
                 focal_length,
-                target_apparent_field_of_view,
+                target_apparent_field_of_view=None,
                 barrel_size=BarrelSize.ONE_AND_A_QUARTER_INCH,
                 wall_thickness=2.0):
         """
-        Creates a generic eyepiece of the given focal length and apparent field of view.
+        Creates a generic eyepiece of the given focal length.
+
+        If no field of view is given, it attempts to give the widest possible field of view.
 
         If the barrel size doesn't allow the eyepiece to exist, then the field of view is automatically constrained.
 
         :param focal_length: The focal length in millimeters
-        :param target_apparent_field_of_view: The apparent field of view in degrees
+        :param target_apparent_field_of_view: The apparent field of view in degrees; if None, then auto generates the widest possible.
         :param barrel_size: The barrels size (enum value)
         :param wall_thickness: The thickness of the wall; limits the space for the stop.
         :return: The generic eyepiece.
         """
-        desired_stop_diameter = math.radians(target_apparent_field_of_view) * focal_length
+        if target_apparent_field_of_view is None:
+            desired_stop_diameter = barrel_size.diameter - 2.0 * wall_thickness
+        else:
+            desired_stop_diameter = math.radians(target_apparent_field_of_view) * focal_length
+
         max_stop_diameter = barrel_size.diameter - 2.0 * wall_thickness
-        stop_diameter = min(desired_stop_diameter, max_stop_diameter)
+        min_stop_diameter = 0.0
+        stop_diameter = max(min(desired_stop_diameter, max_stop_diameter), min_stop_diameter)
+
         afov = math.degrees(stop_diameter / focal_length)
         return cls(manf.generic,
+                   "Generic",
                    focal_length,
                    afov,
                    barrel_size,
                    field_stop_diameter=stop_diameter)
+
+
+def degrees_to_arcseconds(degrees):
+    return degrees * 3600.0
+
+
+def arcseconds_to_degrees(arcseconds):
+    return arcseconds / 3600.0

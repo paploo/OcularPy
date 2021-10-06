@@ -39,5 +39,24 @@ class Telescope:
     def resolving_power_arcseconds(self, diffraction_limit_parameter):
         return diffraction_limit_parameter / self.objective_diameter
 
+    def min_magnification(self, max_pupil_diameter=7.0):
+        return self.objective_diameter / max_pupil_diameter
+
+    def max_magnification(self,
+                          diffraction_limit_parameter=dlp.COMMON,
+                          eye_maximum_resolution_arcseconds=120.0):
+        """
+        Returns the maximum useful magnification of this optical system due to diffraction limiting.
+
+        In reality, this can be affected by up-to a factor of 2 due to limits due to atmosphere, and the
+        comfort of zooming higher than the diffraction limit.
+
+        :param diffraction_limit_parameter: The resolution parameter used to calculate the diffraction limit.
+        :param eye_maximum_resolution_arcseconds: The maximum resolution of the viewer's eye in arc-seconds.
+        :return: The maximum magnification.
+        """
+        return eye_maximum_resolution_arcseconds / self.resolving_power_arcseconds(
+            diffraction_limit_parameter)
+
     def __str__(self):
         return self.name

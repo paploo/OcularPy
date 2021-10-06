@@ -2,6 +2,9 @@ from functools import reduce
 from pathlib import Path
 from ocular.equipment import csv_loader
 from ocular.equipment import sample_loader
+import matplotlib.pyplot as plt
+
+from ocular.viz import field_of_view_viz
 
 
 def main():
@@ -16,6 +19,13 @@ def main():
 
     all_favs = reduce(lambda a, b: a + b, favorites.catalog.values())
     print(all_favs)
+
+    telescope = telescopes.catalog['ORI-XX12G']
+    eyepieces = eyepiece_lib.filter_favorites(all_favs).catalog.values()
+
+    fig, ax = plt.subplots()
+    field_of_view_viz.make_plot(ax, telescopes.catalog['ORI-XX12G'], eyepieces)
+    plt.show()
 
 
 if __name__ == '__main__':
