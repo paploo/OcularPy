@@ -5,6 +5,8 @@ from ocular.equipment import sample_loader
 import matplotlib.pyplot as plt
 
 from ocular.viz import apparent_field_of_view_viz
+from ocular.viz import true_angle_of_view_viz
+from ocular.viz import true_field_of_view_viz
 
 
 def main():
@@ -22,10 +24,13 @@ def main():
 
     telescope = telescopes.catalog['ORI-XX12G']
     #telescope = telescopes.catalog['APR-AD8']
+    #telescope = telescopes.catalog['AWB-ONESKY']
     eyepieces = eyepiece_lib.filter_favorites(all_favs).catalog.values()
 
     fig, ax = plt.subplots()
-    apparent_field_of_view_viz.make_plot(ax, telescope, eyepieces)
+    #apparent_field_of_view_viz.make_plot(ax, telescope, eyepieces)
+    true_angle_of_view_viz.make_plot(ax, telescope,eyepieces)
+    #true_field_of_view_viz.make_plot(ax, telescope,eyepieces)
     plt.show()
 
 

@@ -78,7 +78,8 @@ class Eyepiece:
         This number is typically about 10% off from the reported apparent fields of view, which use the small angle approximation.
         :return: The apparent field of view in degrees
         """
-        return 2.0 * math.atan(0.5 * (self.field_stop_diameter / self.focal_length))
+        rads = 2.0 * math.atan(0.5 * (self.field_stop_diameter / self.focal_length))
+        return math.degrees(rads)
 
     def __str__(self):
         return self.name
@@ -112,6 +113,11 @@ class Eyepiece:
         stop_diameter = max(min(desired_stop_diameter, max_stop_diameter), min_stop_diameter)
 
         afov = math.degrees(stop_diameter / focal_length)
+
+        # afov is a standard mathematical construction, but it totally breaks-down at large FoVs,
+        # so we insert some sanity for the purpose of our visualizations.
+        afov = min(afov, 180.0)
+
         return cls(manf.generic,
                    "Generic",
                    focal_length,
@@ -126,3 +132,11 @@ def degrees_to_arcseconds(degrees):
 
 def arcseconds_to_degrees(arcseconds):
     return arcseconds / 3600.0
+
+
+def degrees_to_arcminutes(degrees):
+    return degrees * 60.0
+
+
+def arcminutes_to_degrees(arcminutes):
+    return arcminutes / 60.0
