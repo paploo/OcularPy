@@ -22,7 +22,7 @@ def tfov_yaxis(ax, telescope):
     max_tfov = math.ceil(max_tfov / 0.5) * 0.5
 
     ax.set_ylim(0.0, max_tfov)
-    ax.set_ylabel(r'$\Delta\theta_{true}$ ($\degree$)')
+    ax.set_ylabel(r'$\Delta\theta_{tfov}$ ($\degree$)')
 
     sec_ax_functions = (true_field_of_view_to_time_in_field_of_view, time_in_field_of_view_to_true_field_of_view)
     sec_ax = ax.secondary_yaxis('right', functions=sec_ax_functions)
@@ -49,8 +49,7 @@ def scatter_tfov(ax, telescope, eyepieces):
 
 
 def tfov_max_lines(ax, telescope):
-    # TODO: These turn out to be lines? Validate this and then make a short form version.
-    # TODO: Use the short-form version to set the max.
+    # These turn out to be lines, but we keep the long-form to be able to adjust to better computations.
     def tfov(focal_length, barrel_size, wall_thickness):
         eyepiece = Eyepiece.generic(focal_length,
                                     barrel_size=barrel_size,
@@ -70,8 +69,6 @@ def tfov_max_lines(ax, telescope):
         afovs = [tfov(fl, barrel_size=opt[0], wall_thickness=opt[1]) for fl in fls]
         ax.plot(fls, afovs, color=barrel_color(opt[0]).value, linestyle=opt[2])
 
+
 def tfov_max(telescope):
-    # This is focal_length invariant unless we limit the max fov (since the ideal can exceed 180 degrees)!.
-    longest_fl = telescope.eyepiece_focal_length_for_magnification(telescope.min_magnification())
-    eyepiece = Eyepiece.generic(longest_fl, barrel_size=BarrelSize.TWO_INCH, wall_thickness=0.0)
-    return OpticalSystem(telescope, eyepiece).true_field_of_view
+    return telescope.max_true_field_of_view(barrel_size=BarrelSize.TWO_INCH, wall_thickness=0.0)

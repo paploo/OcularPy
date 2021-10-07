@@ -1,4 +1,7 @@
+import math
+
 import ocular.core.diffraction_limit_parameter as dlp
+from ocular.core.eyepiece import BarrelSize, TYPICAL_WALL_THICKNESS
 from ocular.util.tools import codeize
 
 
@@ -26,7 +29,6 @@ class Telescope:
     @property
     def name(self):
         return f"{self.code}[{self.manufacturer.code} {self.model} f/{self.focal_ratio:.1f} {self.objective_diameter:.0f}mm]"
-
 
     @property
     def focal_ratio(self):
@@ -57,6 +59,18 @@ class Telescope:
         """
         return eye_maximum_resolution_arcseconds / self.resolving_power_arcseconds(
             diffraction_limit_parameter)
+
+    def max_true_field_of_view(self,
+                               barrel_size=BarrelSize.ONE_AND_A_QUARTER_INCH,
+                               wall_thickness=TYPICAL_WALL_THICKNESS):
+        max_field_diameter = barrel_size.diameter - 2.0 * wall_thickness
+        return math.degrees(max_field_diameter / self.focal_length)
+
+    def max_true_angle_of_view(self,
+                               barrel_size=BarrelSize.ONE_AND_A_QUARTER_INCH,
+                               wall_thickness=TYPICAL_WALL_THICKNESS):
+        max_field_diameter = barrel_size.diameter - 2.0 * wall_thickness
+        return math.degrees(2.0 * math.atan((max_field_diameter / 2.0) / self.focal_length))
 
     def magnification_for_eyepeice_focal_length(self, eyepiece_focal_length):
         return self.focal_length / eyepiece_focal_length

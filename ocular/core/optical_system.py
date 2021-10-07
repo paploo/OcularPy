@@ -24,13 +24,23 @@ class OpticalSystem:
 
     @property
     def true_angle_of_view(self):
-        return self.eyepiece.apparent_angle_of_view / self.magnification
+        return math.degrees(2.0 * math.atan((self.eyepiece.field_stop_diameter / 2.0) / self.telescope.focal_length))
+
+    @property
+    def angle_of_view_magnification(self):
+        """
+        Calculates the magnification of the system using the true angle of view ratio instead of the paraxial approximation
+        that is typically used.
+
+        I'm not sure if this is a real thing.
+        """
+        return self.eyepiece.apparent_angle_of_view / self.true_angle_of_view
 
     def time_in_field_of_view(self, declination=0.0):
         return true_field_of_view_to_time_in_field_of_view(self.true_field_of_view, declination)
 
     def time_in_angle_of_view(self, declination=0.0):
-        return true_angle_of_view_to_time_in_field_of_view(self.true_angle_of_view, declination)
+        return true_angle_of_view_to_time_in_angle_of_view(self.true_angle_of_view, declination)
 
     def image_resolution_arcseconds(self, eye_maximum_resolution_arcseconds=120.0):
         """

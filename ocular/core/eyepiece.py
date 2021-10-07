@@ -13,6 +13,8 @@ class BarrelSize(Enum):
         self.diameter = diameter
 
 
+TYPICAL_WALL_THICKNESS = 2.0
+
 
 class Eyepiece:
 
@@ -89,7 +91,7 @@ class Eyepiece:
                 focal_length,
                 target_apparent_field_of_view=None,
                 barrel_size=BarrelSize.ONE_AND_A_QUARTER_INCH,
-                wall_thickness=2.0):
+                wall_thickness=TYPICAL_WALL_THICKNESS):
         """
         Creates a generic eyepiece of the given focal length.
 
@@ -112,11 +114,9 @@ class Eyepiece:
         min_stop_diameter = 0.0
         stop_diameter = max(min(desired_stop_diameter, max_stop_diameter), min_stop_diameter)
 
+        # Note that this is the definition of AFoV;
+        # it is a theoretical construct that gets wonk in large angles, producing values over 180° in corner cases.
         afov = math.degrees(stop_diameter / focal_length)
-
-        # afov is a standard mathematical construction, but it totally breaks-down at large FoVs,
-        # so we insert some sanity for the purpose of our visualizations.
-        afov = min(afov, 180.0)
 
         return cls(manf.generic,
                    "Generic",
