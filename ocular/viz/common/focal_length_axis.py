@@ -24,15 +24,15 @@ def focal_length_xaxis_setup(ax, telescope):
 def max_focal_length_line(ax, telescope):
     min_mag = telescope.min_magnification(6.0)
     max_focal = telescope.eyepiece_focal_length_for_magnification(min_mag)
-    ax.axvline(max_focal, color=Color.PURPLE.value, label="Max Usable $f_L$")
+    ax.axvline(max_focal, color=Color.PURPLE.value, label=r'Max Usable $f_L$')
 
 
 def min_focal_length_span(ax, telescope):
     max_mag = telescope.max_magnification()
     min_focal = telescope.eyepiece_focal_length_for_magnification(max_mag)
-    ax.axvspan(min_focal/2.0, min_focal, color=Color.PURPLE.alpha(0.2), label="Min Usable $f_L$")
+    ax.axvspan(min_focal/2.0, min_focal, color=Color.PURPLE.alpha(0.2), label=r'Min Usable $f_L$')
 
 
 def atmosphere_limit_focal_length_line(ax, telescope):
     atm_focal = telescope.eyepiece_focal_length_for_magnification(300.0)
-    ax.axvline(atm_focal, color=Color.PURPLE.value, label="Atm Limit $f_L$")
+    ax.axvline(atm_focal, color=Color.PURPLE.value, label=r'Atm Limit $f_L$')

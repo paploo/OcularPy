@@ -31,8 +31,8 @@ def main():
     eyepieces = eyepiece_lib.filter_favorites(all_favs).catalog.values()
 
     fig, ax = plt.subplots()
-    apparent_field_of_view_viz.make_plot(ax, telescope, eyepieces)
-    #true_angle_of_view_viz.make_plot(ax, telescope,eyepieces)
+    #apparent_field_of_view_viz.make_plot(ax, telescope, eyepieces)
+    true_angle_of_view_viz.make_plot(ax, telescope,eyepieces)
     #true_field_of_view_viz.make_plot(ax, telescope,eyepieces)
     plt.show()
 
