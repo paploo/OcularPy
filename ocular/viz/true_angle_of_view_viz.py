@@ -11,10 +11,12 @@ import ocular.viz.focal_length_axis as fla
 
 def make_plot(ax, telescope, eyepieces):
     ax.grid(True)
+    ax.set_title("True Angle of View")
     fla.focal_length_xaxis(ax, telescope)
     taov_yaxis(ax, telescope)
     taov_max_lines(ax, telescope)
     scatter_taov(ax, telescope, eyepieces)
+    ax.legend()
 
 
 def taov_yaxis(ax, telescope):
@@ -57,17 +59,19 @@ def taov_max_lines(ax, telescope):
         return OpticalSystem(telescope, eyepiece).true_angle_of_view
 
     options = [
-        (BarrelSize.ONE_AND_A_QUARTER_INCH, 0.0, None),
-        (BarrelSize.ONE_AND_A_QUARTER_INCH, 2.0, 'dashed'),
         (BarrelSize.TWO_INCH, 0.0, None),
-        (BarrelSize.TWO_INCH, 2.0, 'dashed')
+        (BarrelSize.TWO_INCH, 2.0, 'dashed'),
+        (BarrelSize.ONE_AND_A_QUARTER_INCH, 0.0, None),
+        (BarrelSize.ONE_AND_A_QUARTER_INCH, 2.0, 'dashed')
     ]
 
     fls = np.arange(fla.VIZ_FOCAL_LENGTH_DELTA, fla.VIZ_FOCAL_LENGTH_MAX, fla.VIZ_FOCAL_LENGTH_DELTA)
 
     for opt in options:
         afovs = [taov(fl, barrel_size=opt[0], wall_thickness=opt[1]) for fl in fls]
-        ax.plot(fls, afovs, color=barrel_color(opt[0]).value, linestyle=opt[2])
+        label_qualifier = 'safe' if (opt[1] > 0.0) else 'max'
+        label = opt[0].label if (opt[1] == 0.0) else None
+        ax.plot(fls, afovs, color=barrel_color(opt[0]).value, linestyle=opt[2], label=label)
 
 
 def taov_max(telescope):

@@ -11,10 +11,12 @@ import ocular.viz.focal_length_axis as fla
 
 def make_plot(ax, telescope, eyepieces):
     ax.grid(True)
+    ax.set_title("True Field of View")
     fla.focal_length_xaxis(ax, telescope)
     tfov_yaxis(ax, telescope)
     tfov_max_lines(ax, telescope)
     scatter_tfov(ax, telescope, eyepieces)
+    ax.legend()
 
 
 def tfov_yaxis(ax, telescope):
@@ -67,7 +69,8 @@ def tfov_max_lines(ax, telescope):
 
     for opt in options:
         afovs = [tfov(fl, barrel_size=opt[0], wall_thickness=opt[1]) for fl in fls]
-        ax.plot(fls, afovs, color=barrel_color(opt[0]).value, linestyle=opt[2])
+        label = opt[0].label if (opt[1] == 0.0) else None
+        ax.plot(fls, afovs, color=barrel_color(opt[0]).value, linestyle=opt[2], label=label)
 
 
 def tfov_max(telescope):
