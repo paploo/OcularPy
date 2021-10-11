@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 from ocular.viz import apparent_field_of_view_viz
 from ocular.viz import true_angle_of_view_viz
 from ocular.viz import true_field_of_view_viz
+from ocular.viz import field_stop_diameter_viz
 
 
 def main():
@@ -32,8 +33,9 @@ def main():
 
     fig, ax = plt.subplots()
     #apparent_field_of_view_viz.make_plot(ax, telescope, eyepieces)
-    true_angle_of_view_viz.make_plot(ax, telescope,eyepieces)
-    #true_field_of_view_viz.make_plot(ax, telescope,eyepieces)
+    #true_angle_of_view_viz.make_plot(ax, telescope, eyepieces)
+    #true_field_of_view_viz.make_plot(ax, telescope, eyepieces)
+    field_stop_diameter_viz.make_plot(ax, telescope, eyepieces)
     plt.show()
 
 

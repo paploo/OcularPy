@@ -1,5 +1,7 @@
 import math
 
+import numpy as np
+
 import ocular.core.diffraction_limit_parameter as dlp
 from ocular.core.eyepiece import BarrelSize
 from ocular.util.tools import codeize
@@ -89,13 +91,13 @@ class Telescope:
                            barrel_size=BarrelSize.ONE_AND_A_QUARTER_INCH,
                            wall_thickness=0.0):
         field_stop_diameter = barrel_size.field_stop_diameter(desired_field_stop_diameter, wall_thickness=wall_thickness)
-        return math.degrees(2.0 * math.atan((field_stop_diameter / 2.0) / self.focal_length))
+        return np.degrees(2.0 * np.arctan((field_stop_diameter / 2.0) / self.focal_length))
 
     def field_stop_diameter(self,
                             true_angle_of_view,
                             barrel_size=BarrelSize.ONE_AND_A_QUARTER_INCH,
                             wall_thickness=0.0):
-        desired_field_stop_diameter = 2.0 * self.focal_length * math.tan(math.radians(true_angle_of_view)/2.0)
+        desired_field_stop_diameter = 2.0 * self.focal_length * np.tan(np.radians(true_angle_of_view)/2.0)
         field_stop_diameter = barrel_size.field_stop_diameter(desired_field_stop_diameter, wall_thickness=wall_thickness)
         return field_stop_diameter
 

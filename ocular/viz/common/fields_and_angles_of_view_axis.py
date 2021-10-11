@@ -18,7 +18,7 @@ def system_scatter(ax, telescope, eyepieces, y_from_optical_system):
 
     for os in optical_systems:
         ax.annotate(os.eyepiece.manufacturer.code,
-                    (os.eyepiece.focal_length, os.eyepiece.apparent_field_of_view),
+                    (os.eyepiece.focal_length, y_from_optical_system(os)),
                     textcoords="offset points",
                     xytext=(0, 10),
                     ha='center')
@@ -51,8 +51,8 @@ def field_stop_lines(ax, telescope, y_calc_func):
         ax.plot(fls, y_values, color=barrel_color(opt[0]).value, linestyle=opt[2], label=label)
 
 
-def true_yaxis(ax, telescope, max_value, label, max_time_function, secax_functions):
-    snapped_max = math.ceil(max_value / 0.5) * 0.5
+def true_yaxis(ax, telescope, max_value, label, max_time_function, secax_functions, max_granularity=0.5):
+    snapped_max = math.ceil(max_value / max_granularity) * max_granularity
     ax.set_ylim(0.0, snapped_max)
     ax.set_ylabel(label)
 

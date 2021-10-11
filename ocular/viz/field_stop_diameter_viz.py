@@ -1,6 +1,8 @@
 import ocular.viz.common.fields_and_angles_of_view_axis as flda
 import ocular.viz.common.focal_length_axis as fla
 from ocular.core.eyepiece import BarrelSize
+from ocular.core.optical_system import true_angle_of_view_to_time_in_angle_of_view, \
+    time_in_angle_of_view_to_true_angle_of_view
 
 
 def make_plot(ax, telescope, eyepieces):
@@ -14,15 +16,17 @@ def make_plot(ax, telescope, eyepieces):
 
 
 def yaxis(ax, telescope):
-    #TODO: Need to build the right conversion functions and then this should work.
+    # TODO: Need to build the right conversion functions and then this should work.
     pass
-    secax_functions = (true_field_of_view_to_time_in_field_of_view, time_in_field_of_view_to_true_field_of_view)
+    secax_functions = (field_stop_diameter_to_time_in_angle_of_view(telescope),
+                       time_in_angle_of_view_to_field_stop_diameter(telescope))
     flda.true_yaxis(ax,
                     telescope,
-                    max_value=BarrelSize.TWO_INCH.value,
-                    label=r'$\Delta\theta_{tfov}$ ($\degree$)',
-                    max_time_function=true_field_of_view_to_time_in_field_of_view,
-                    secax_functions=secax_functions)
+                    max_value=BarrelSize.TWO_INCH.diameter,
+                    label=r'$\Delta D_{stop}$ (mm)',
+                    max_time_function=field_stop_diameter_to_time_in_angle_of_view(telescope),
+                    secax_functions=secax_functions,
+                    max_granularity=5.0)
 
 
 def scatter(ax, telescope, eyepieces):
@@ -32,5 +36,23 @@ def scatter(ax, telescope, eyepieces):
 def max_lines(ax, telescope):
     flda.system_field_stop_lines(ax, telescope, lambda os: os.eyepiece.field_stop_diameter)
 
-def stop_diameter_to_time_in_field_of_view(stop_diameter, telescope):
-    pass
+
+def field_stop_diameter_to_time_in_angle_of_view(telescope):
+    def taov(field_stop_diameter):
+        return telescope.true_angle_of_view(field_stop_diameter, BarrelSize.TWO_INCH, wall_thickness=0.0)
+
+    def f(field_stop_diameter):
+        return true_angle_of_view_to_time_in_angle_of_view(taov(field_stop_diameter))
+
+    return f
+
+
+def time_in_angle_of_view_to_field_stop_diameter(telescope):
+    def f(time_in_aov):
+        return telescope.field_stop_diameter(
+            time_in_angle_of_view_to_true_angle_of_view(time_in_aov),
+            BarrelSize.TWO_INCH,
+            wall_thickness=0.0
+        )
+
+    return f
