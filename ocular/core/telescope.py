@@ -28,7 +28,7 @@ class Telescope:
 
     @property
     def name(self):
-        return f"{self.code}[{self.manufacturer.code} {self.model} f/{self.focal_ratio:.1f} {self.objective_diameter:.0f}mm]"
+        return f"{self.code}[{self.manufacturer.code} {self.model} f/{self.focal_ratio:.1f} {self.objective_diameter:.0f}mm"
 
     @property
     def focal_ratio(self):

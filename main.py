@@ -22,6 +22,9 @@ def main():
     all_favs = reduce(lambda a, b: a + b, favorites.catalog.values())
     print(all_favs)
 
+    for t in telescopes:
+        print(t)
+
     telescope = telescopes.catalog['ORI-XX12G']
     #telescope = telescopes.catalog['APR-AD8']
     #telescope = telescopes.catalog['AWB-ONESKY']

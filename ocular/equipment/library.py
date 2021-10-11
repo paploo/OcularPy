@@ -22,6 +22,13 @@ class Library:
         self.kind = kind
         self.catalog = catalog
 
+    def __getitem__(self, key):
+        return self.catalog[key]
+
+    def __iter__(self):
+        return iter(self.catalog.values())
+
+
     def filter_favorites(self, favorites):
         return self.__class__(f"{favorites.name} from {self.name}",
                               self.kind,
