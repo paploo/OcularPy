@@ -23,19 +23,20 @@ def main():
     all_favs = reduce(lambda a, b: a + b, favorites.catalog.values())
     print(all_favs)
 
-    for t in telescopes:
-        print(t)
-
     telescope = telescopes.catalog['ORI-XX12G']
     #telescope = telescopes.catalog['APR-AD8']
     #telescope = telescopes.catalog['AWB-ONESKY']
     eyepieces = eyepiece_lib.filter_favorites(all_favs).catalog.values()
+
+    plt.rcParams['figure.figsize'] = [12,9]
+    print(plt.rcParams.get('figure.figsize'))
 
     fig, ax = plt.subplots()
     #apparent_field_of_view_viz.make_plot(ax, telescope, eyepieces)
     #true_angle_of_view_viz.make_plot(ax, telescope, eyepieces)
     #true_field_of_view_viz.make_plot(ax, telescope, eyepieces)
     field_stop_diameter_viz.make_plot(ax, telescope, eyepieces)
+    ax.legend()
     plt.show()
 
 

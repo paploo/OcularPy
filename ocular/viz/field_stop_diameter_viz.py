@@ -14,7 +14,6 @@ def make_plot(ax, telescope, eyepieces):
     yaxis(ax, telescope)
     max_lines(ax, telescope)
     scatter(ax, telescope, eyepieces)
-    ax.legend()
 
 
 def yaxis(ax, telescope):
