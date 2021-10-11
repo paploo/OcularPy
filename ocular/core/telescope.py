@@ -1,7 +1,7 @@
 import math
 
 import ocular.core.diffraction_limit_parameter as dlp
-from ocular.core.eyepiece import BarrelSize, TYPICAL_WALL_THICKNESS
+from ocular.core.eyepiece import BarrelSize
 from ocular.util.tools import codeize
 
 
@@ -62,15 +62,15 @@ class Telescope:
 
     def max_true_field_of_view(self,
                                barrel_size=BarrelSize.ONE_AND_A_QUARTER_INCH,
-                               wall_thickness=TYPICAL_WALL_THICKNESS):
-        max_field_diameter = barrel_size.diameter - 2.0 * wall_thickness
-        return math.degrees(max_field_diameter / self.focal_length)
+                               wall_thickness=0.0):
+        max_field_stop_diameter = barrel_size.max_field_stop_diameter(wall_thickness)
+        return math.degrees(max_field_stop_diameter / self.focal_length)
 
     def max_true_angle_of_view(self,
                                barrel_size=BarrelSize.ONE_AND_A_QUARTER_INCH,
-                               wall_thickness=TYPICAL_WALL_THICKNESS):
-        max_field_diameter = barrel_size.diameter - 2.0 * wall_thickness
-        return math.degrees(2.0 * math.atan((max_field_diameter / 2.0) / self.focal_length))
+                               wall_thickness=0.0):
+        max_field_stop_diameter = barrel_size.max_field_stop_diameter(wall_thickness)
+        return math.degrees(2.0 * math.atan((max_field_stop_diameter / 2.0) / self.focal_length))
 
     def magnification_for_eyepeice_focal_length(self, eyepiece_focal_length):
         return self.focal_length / eyepiece_focal_length
@@ -83,6 +83,21 @@ class Telescope:
 
     def eyepiece_focal_length_for_exit_pupil(self, exit_pupil):
         return exit_pupil * self.focal_ratio
+
+    def true_angle_of_view(self,
+                           desired_field_stop_diameter,
+                           barrel_size=BarrelSize.ONE_AND_A_QUARTER_INCH,
+                           wall_thickness=0.0):
+        field_stop_diameter = barrel_size.field_stop_diameter(desired_field_stop_diameter, wall_thickness=wall_thickness)
+        return math.degrees(2.0 * math.atan((field_stop_diameter / 2.0) / self.focal_length))
+
+    def field_stop_diameter(self,
+                            true_angle_of_view,
+                            barrel_size=BarrelSize.ONE_AND_A_QUARTER_INCH,
+                            wall_thickness=0.0):
+        desired_field_stop_diameter = 2.0 * self.focal_length * math.tan(math.radians(true_angle_of_view)/2.0)
+        field_stop_diameter = barrel_size.field_stop_diameter(desired_field_stop_diameter, wall_thickness=wall_thickness)
+        return field_stop_diameter
 
     def __str__(self):
         return self.name

@@ -12,6 +12,12 @@ class BarrelSize(Enum):
         self.label = label
         self.diameter = diameter
 
+    def max_field_stop_diameter(self, wall_thickness=0.0):
+        return self.diameter - 2.0 * wall_thickness
+
+    def field_stop_diameter(self, desired_field_stop_diameter, wall_thickness):
+        return max(min(desired_field_stop_diameter, self.max_field_stop_diameter(wall_thickness)), 0.0)
+
 
 TYPICAL_WALL_THICKNESS = 2.0
 
@@ -91,7 +97,7 @@ class Eyepiece:
                 focal_length,
                 target_apparent_field_of_view=None,
                 barrel_size=BarrelSize.ONE_AND_A_QUARTER_INCH,
-                wall_thickness=TYPICAL_WALL_THICKNESS):
+                wall_thickness=0.0):
         """
         Creates a generic eyepiece of the given focal length.
 
@@ -106,13 +112,11 @@ class Eyepiece:
         :return: The generic eyepiece.
         """
         if target_apparent_field_of_view is None:
-            desired_stop_diameter = barrel_size.diameter - 2.0 * wall_thickness
+            desired_stop_diameter = barrel_size.max_field_stop_diameter(wall_thickness)
         else:
             desired_stop_diameter = math.radians(target_apparent_field_of_view) * focal_length
 
-        max_stop_diameter = barrel_size.diameter - 2.0 * wall_thickness
-        min_stop_diameter = 0.0
-        stop_diameter = max(min(desired_stop_diameter, max_stop_diameter), min_stop_diameter)
+        stop_diameter = barrel_size.field_stop_diameter(desired_stop_diameter, wall_thickness=wall_thickness)
 
         # Note that this is the definition of AFoV;
         # it is a theoretical construct that gets wonk in large angles, producing values over 180° in corner cases.

@@ -2,7 +2,7 @@ import math
 
 import numpy as np
 
-from ocular.core.eyepiece import BarrelSize, Eyepiece
+from ocular.core.eyepiece import BarrelSize, Eyepiece, TYPICAL_WALL_THICKNESS
 import ocular.viz.common.focal_length_axis as fla
 from ocular.core.optical_system import OpticalSystem
 from ocular.viz.common.colors import barrel_color
@@ -38,9 +38,9 @@ def system_field_stop_lines(ax, telescope, y_from_optical_system):
 def field_stop_lines(ax, telescope, y_calc_func):
     options = [
         (BarrelSize.TWO_INCH, 0.0, None),
-        (BarrelSize.TWO_INCH, 2.0, 'dashed'),
+        (BarrelSize.TWO_INCH, TYPICAL_WALL_THICKNESS, 'dashed'),
         (BarrelSize.ONE_AND_A_QUARTER_INCH, 0.0, None),
-        (BarrelSize.ONE_AND_A_QUARTER_INCH, 2.0, 'dashed')
+        (BarrelSize.ONE_AND_A_QUARTER_INCH, TYPICAL_WALL_THICKNESS, 'dashed')
     ]
 
     fls = np.arange(fla.VIZ_FOCAL_LENGTH_DELTA, fla.VIZ_FOCAL_LENGTH_MAX, fla.VIZ_FOCAL_LENGTH_DELTA)
