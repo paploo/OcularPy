@@ -1,10 +1,9 @@
-import matplotlib.pyplot as plt
 import numpy as np
 
 from ocular.core.eyepiece import Eyepiece, BarrelSize
 from ocular.core.optical_system import OpticalSystem
-from ocular.viz.colors import barrel_color
-import ocular.viz.focal_length_axis as fla
+from ocular.viz.common.colors import barrel_color
+import ocular.viz.common.focal_length_axis as fla
 
 
 def make_plot(ax, telescope, eyepieces):
