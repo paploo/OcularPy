@@ -1,3 +1,5 @@
+import numpy as np
+
 import ocular.viz.common.fields_and_angles_of_view_axis as flda
 import ocular.viz.common.focal_length_axis as fla
 from ocular.core.eyepiece import BarrelSize
@@ -44,7 +46,7 @@ def field_stop_diameter_to_time_in_angle_of_view(telescope):
     def f(field_stop_diameter):
         return true_angle_of_view_to_time_in_angle_of_view(taov(field_stop_diameter))
 
-    return f
+    return np.vectorize(f, otypes=[float])
 
 
 def time_in_angle_of_view_to_field_stop_diameter(telescope):
@@ -55,4 +57,4 @@ def time_in_angle_of_view_to_field_stop_diameter(telescope):
             wall_thickness=0.0
         )
 
-    return f
+    return np.vectorize(f, otypes=[float])

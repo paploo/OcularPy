@@ -1,8 +1,6 @@
 import math
 from enum import Enum
 
-import numpy as np
-
 import ocular.core.manufacturer as manf
 from ocular.util.tools import codeize
 
@@ -19,11 +17,7 @@ class BarrelSize(Enum):
         return self.diameter - 2.0 * wall_thickness
 
     def field_stop_diameter(self, desired_field_stop_diameter, wall_thickness):
-        max_limit = self.max_field_stop_diameter(wall_thickness)
-        mn = np.minimum(desired_field_stop_diameter, max_limit)
-        mx = np.maximum(mn, 0.0)
-        return mx
-        #return max(min(desired_field_stop_diameter, self.max_field_stop_diameter(wall_thickness)), 0.0)
+        return max(min(desired_field_stop_diameter, self.max_field_stop_diameter(wall_thickness)), 0.0)
 
 
 TYPICAL_WALL_THICKNESS = 2.0
