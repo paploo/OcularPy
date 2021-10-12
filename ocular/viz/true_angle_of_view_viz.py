@@ -16,6 +16,7 @@ def make_plot(ax, telescope, eyepieces):
     fla.focal_length_xaxis(ax, telescope)
     yaxis(ax, telescope)
     max_lines(ax, telescope)
+    afov_lines(ax, telescope)
     max_scatter(ax, telescope, eyepieces)
 
 
@@ -35,6 +36,10 @@ def max_scatter(ax, telescope, eyepieces):
 
 def max_lines(ax, telescope):
     flda.system_field_stop_lines(ax, telescope, lambda os: os.true_angle_of_view)
+
+
+def afov_lines(ax, telescope):
+    flda.system_afov_lines(ax, telescope, lambda os: os.true_angle_of_view)
 
 
 def max_value(telescope):

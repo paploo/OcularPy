@@ -5,10 +5,10 @@ import numpy as np
 from ocular.core.eyepiece import BarrelSize, Eyepiece, TYPICAL_WALL_THICKNESS
 import ocular.viz.common.focal_length_axis as fla
 from ocular.core.optical_system import OpticalSystem
-from ocular.viz.common.colors import barrel_color
+from ocular.viz.common.colors import Gruvbox, barrel_color
 
 
-def system_scatter(ax, telescope, eyepieces, y_from_optical_system):
+def system_scatter(ax, telescope, eyepieces, y_from_optical_system, label_func=None):
     optical_systems = OpticalSystem.combinations(telescope, eyepieces)
     x = [os.eyepiece.focal_length for os in optical_systems]
     y = [y_from_optical_system(os) for os in optical_systems]
@@ -17,7 +17,12 @@ def system_scatter(ax, telescope, eyepieces, y_from_optical_system):
     ax.scatter(x, y, s=s, c=c)
 
     for os in optical_systems:
-        ax.annotate(os.eyepiece.manufacturer.code,
+        if (label_func is None):
+            label = "{} {:.0f}$\degree$".format(os.eyepiece.manufacturer.code, os.eyepiece.apparent_field_of_view)
+        else:
+            label = label_func(os)
+        
+        ax.annotate(label,
                     (os.eyepiece.focal_length, y_from_optical_system(os)),
                     textcoords="offset points",
                     xytext=(0, 10),
@@ -49,6 +54,30 @@ def field_stop_lines(ax, telescope, y_calc_func):
         y_values = [y_calc_func(fl, barrel_size=opt[0], wall_thickness=opt[1]) for fl in fls]
         label = opt[0].label if (opt[1] == 0.0) else None
         ax.plot(fls, y_values, color=barrel_color(opt[0]).value, linestyle=opt[2], label=label)
+
+def system_afov_lines(ax, telescope, y_from_optical_system):
+    def optical_system_func(focal_length, apparent_field_of_view):
+        eyepiece = Eyepiece.generic(focal_length, apparent_field_of_view, BarrelSize.TWO_INCH)
+        os = OpticalSystem(telescope, eyepiece)
+        return y_from_optical_system(os)
+    
+    return afov_lines(ax, telescope, optical_system_func)
+
+def afov_lines(ax, telescope, y_calc_func):        
+    options = [
+        (50, 'solid', Gruvbox.LIGHT_GREEN.alpha(0.3)),
+        (60, 'solid', Gruvbox.LIGHT_GREEN.alpha(0.3)),
+        (70, 'solid', Gruvbox.LIGHT_GREEN.alpha(0.3)),
+        (80, 'solid', Gruvbox.LIGHT_GREEN.alpha(0.3)),
+        (110, 'solid', Gruvbox.LIGHT_GREEN.alpha(0.3))
+    ]
+
+    fls = np.arange(fla.VIZ_FOCAL_LENGTH_DELTA, fla.VIZ_FOCAL_LENGTH_MAX, fla.VIZ_FOCAL_LENGTH_DELTA)
+
+    for opt in options:
+        y_values = [y_calc_func(fl, opt[0]) for fl in fls]
+        label = str(opt[0]) + r'$\degree$ AFoV'
+        ax.plot(fls, y_values, color=opt[2], linestyle=opt[1], label=label)
 
 
 def true_yaxis(ax, telescope, max_value, label, max_time_function, secax_functions, max_granularity=0.5):

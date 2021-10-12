@@ -1,6 +1,10 @@
 manufacturer_code,manufacturer_name,series,focal_length,apparent_field_of_view,field_stop_diameter,mass,barrel_diameter,eye_relief
+ORI,ORION,Expanse,6,66,8.0,100,31.75,14.8
+ORI,ORION,Expanse,9,66,15.0,100,31.75,15.0
+ORI,ORION,Expanse,15,66,17.0,75,31.75,13.8
+ORI,ORION,Expanse,20,66,23.5,100,31.75,18.8
 SVB,SVBONY,Goldline,6,66,8.0,91.5,31.75,16
-SVB,SVBONY,Goldline,9,66,15.0,93.1,31.75,16
+SVB,SVBONY,Goldline,9,66,11.0,93.1,31.75,16
 SVB,SVBONY,Goldline,15,66,17.0,63.9,31.75,16
 SVB,SVBONY,Goldline,20,66,23.5,82.6,31.75,16
 GSO,GSO,SuperPlossl,32,52,28.6,123,31.75,22
@@ -59,7 +63,7 @@ ES,Explore Scientific,68°,24,68,27.2,329,31.75,18.4
 ES,Explore Scientific,68°,28,68,31.8,458,50.80,21.6
 ES,Explore Scientific,68°,34,68,38.6,685,50.80,26.4
 ES,Explore Scientific,68°,40,68,52.2,998,50.80,31
-ES,Explore Scientific,82°,4.7,82,9.6,213,31.75,13.6
+ES,Explore Scientific,82°,4.7,82,6.9,213,31.75,13.6
 ES,Explore Scientific,82°,6.7,82,9.5,228,31.75,15.7
 ES,Explore Scientific,82°,8.8,82,12.4,255,31.75,15.6
 ES,Explore Scientific,82°,11,82,15.9,279,31.75,15.6

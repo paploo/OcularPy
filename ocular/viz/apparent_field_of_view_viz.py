@@ -17,7 +17,11 @@ def yaxis(ax, telescope):
 
 
 def scatter(ax, telescope, eyepieces):
-    flda.system_scatter(ax, telescope, eyepieces, lambda os: os.eyepiece.apparent_field_of_view)
+    flda.system_scatter(ax,
+                        telescope,
+                        eyepieces,
+                        lambda os: os.eyepiece.apparent_field_of_view,
+                        label_func= lambda os: os.eyepiece.manufacturer.code)
 
 
 def max_lines(ax, telescope):

@@ -101,3 +101,12 @@ class Telescope:
 
     def __str__(self):
         return self.name
+
+def true_field_of_view(focal_length, field_stop_diameter):
+    return math.degrees(field_stop_diameter / focal_length)
+
+def true_angle_of_view(focal_length, field_stop_diameter):
+    return math.degrees(2.0 * math.atan((field_stop_diameter / 2.0) / focal_length))
+
+def field_stop_diameter(focal_length, true_angle_of_vidw):
+    return 2.0 * focal_length * math.tan(math.radians(true_angle_of_view)/2.0)

@@ -1,7 +1,9 @@
+import numpy as np
+from ocular.viz.common.colors import Gruvbox
 import ocular.viz.common.fields_and_angles_of_view_axis as flda
 import ocular.viz.common.focal_length_axis as fla
-from ocular.core.eyepiece import BarrelSize
-from ocular.core.optical_system import time_in_field_of_view_to_true_field_of_view, \
+from ocular.core.eyepiece import BarrelSize, Eyepiece
+from ocular.core.optical_system import OpticalSystem, time_in_field_of_view_to_true_field_of_view, \
     true_field_of_view_to_time_in_field_of_view
 
 # TODO: Add the field stop diameter as a third axis.
@@ -16,6 +18,7 @@ def make_plot(ax, telescope, eyepieces):
     fla.focal_length_xaxis(ax, telescope)
     yaxis(ax, telescope)
     max_lines(ax, telescope)
+    afov_lines(ax, telescope)
     scatter(ax, telescope, eyepieces)
 
 
@@ -31,6 +34,10 @@ def yaxis(ax, telescope):
 
 def scatter(ax, telescope, eyepieces):
     flda.system_scatter(ax, telescope, eyepieces, lambda os: os.true_field_of_view)
+
+
+def afov_lines(ax, telescope):
+    flda.system_afov_lines(ax, telescope, lambda os: os.true_field_of_view)
 
 
 def max_lines(ax, telescope):
