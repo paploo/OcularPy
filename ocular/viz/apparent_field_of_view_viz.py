@@ -21,7 +21,7 @@ def scatter(ax, telescope, eyepieces):
                         telescope,
                         eyepieces,
                         lambda os: os.eyepiece.apparent_field_of_view,
-                        label_func= lambda os: os.eyepiece.manufacturer.code)
+                        label_func=lambda os: os.eyepiece.manufacturer.code)
 
 
 def max_lines(ax, telescope):

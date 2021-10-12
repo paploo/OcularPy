@@ -1,11 +1,10 @@
 import numpy as np
-from ocular.viz.common.colors import Gruvbox
 
 import ocular.viz.common.fields_and_angles_of_view_axis as flda
 import ocular.viz.common.focal_length_axis as fla
-from ocular.core.eyepiece import BarrelSize, Eyepiece
-from ocular.core.optical_system import OpticalSystem, true_angle_of_view_to_time_in_angle_of_view, \
-    time_in_angle_of_view_to_true_angle_of_view
+from ocular.core.eyepiece import BarrelSize
+import ocular.core.optical_system as optsys
+from ocular.core.telescope import true_angle_of_view, field_stop_diameter
 
 
 def make_plot(ax, telescope, eyepieces):
@@ -19,15 +18,13 @@ def make_plot(ax, telescope, eyepieces):
 
 
 def yaxis(ax, telescope):
-    # TODO: Need to build the right conversion functions and then this should work.
-    pass
-    secax_functions = (field_stop_diameter_to_time_in_angle_of_view(telescope),
-                       time_in_angle_of_view_to_field_stop_diameter(telescope))
+    secax_functions = (time_in_view(telescope),
+                       stop_diameter_for_time(telescope))
     flda.true_yaxis(ax,
                     telescope,
-                    max_value=BarrelSize.TWO_INCH.diameter,
+                    max_value=telescope.barrel_size.diameter,
                     label=r'$\Delta D_{stop}$ (mm)',
-                    max_time_function=field_stop_diameter_to_time_in_angle_of_view(telescope),
+                    max_time_function=time_in_view(telescope),
                     secax_functions=secax_functions,
                     max_granularity=5.0)
 
@@ -44,22 +41,17 @@ def max_lines(ax, telescope):
     flda.system_field_stop_lines(ax, telescope, lambda os: os.eyepiece.field_stop_diameter)
 
 
-def field_stop_diameter_to_time_in_angle_of_view(telescope):
-    def taov(field_stop_diameter):
-        return telescope.true_angle_of_view(field_stop_diameter, BarrelSize.TWO_INCH, wall_thickness=0.0)
-
-    def f(field_stop_diameter):
-        return true_angle_of_view_to_time_in_angle_of_view(taov(field_stop_diameter))
+def time_in_view(telescope):
+    def f(stop_diameter):
+        taov = true_angle_of_view(telescope.focal_length, stop_diameter)
+        return optsys.time_in_view(taov)
 
     return np.vectorize(f, otypes=[float])
 
 
-def time_in_angle_of_view_to_field_stop_diameter(telescope):
-    def f(time_in_aov):
-        return telescope.field_stop_diameter(
-            time_in_angle_of_view_to_true_angle_of_view(time_in_aov),
-            BarrelSize.TWO_INCH,
-            wall_thickness=0.0
-        )
+def stop_diameter_for_time(telescope):
+    def f(time_in_fov):
+        taov = optsys.field_angle(time_in_fov)
+        return field_stop_diameter(telescope.focal_length, taov)
 
     return np.vectorize(f, otypes=[float])

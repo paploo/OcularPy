@@ -37,10 +37,10 @@ class OpticalSystem:
         return self.eyepiece.apparent_angle_of_view / self.true_angle_of_view
 
     def time_in_field_of_view(self, declination=0.0):
-        return true_field_of_view_to_time_in_field_of_view(self.true_field_of_view, declination)
+        return time_in_view(self.true_field_of_view, declination)
 
     def time_in_angle_of_view(self, declination=0.0):
-        return true_angle_of_view_to_time_in_angle_of_view(self.true_angle_of_view, declination)
+        return time_in_view(self.true_angle_of_view, declination)
 
     def image_resolution_arcseconds(self, eye_maximum_resolution_arcseconds=120.0):
         """
@@ -62,17 +62,10 @@ def sky_rotation_rate(declination=0.0):
     return (360.0 / 86400.0) * math.cos(math.radians(declination))
 
 
-def true_field_of_view_to_time_in_field_of_view(true_field_of_view, declination=0.0):
-    return true_field_of_view / sky_rotation_rate(declination)
+def time_in_view(field_angle, declination=0.0):
+    return field_angle / sky_rotation_rate(declination)
 
 
-def time_in_field_of_view_to_true_field_of_view(time_in_field_of_view, declination=0.0):
-    return time_in_field_of_view * sky_rotation_rate(declination)
+def field_angle(time_in_view, declination=0.0):
+    return time_in_view * sky_rotation_rate(declination)
 
-
-def true_angle_of_view_to_time_in_angle_of_view(true_angle_of_view, declination=0.0):
-    return true_angle_of_view / sky_rotation_rate(declination)
-
-
-def time_in_angle_of_view_to_true_angle_of_view(time_in_angle_of_view, declination=0.0):
-    return time_in_angle_of_view * sky_rotation_rate(declination)

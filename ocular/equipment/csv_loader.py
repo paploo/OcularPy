@@ -60,7 +60,8 @@ def build_telescope(record):
     return Telescope(manufacturer=build_manufacturer(record),
                      model=record['model'],
                      focal_length=float(record['focal_length']),
-                     objective_diameter=float(record['objective_diameter']))
+                     objective_diameter=float(record['objective_diameter']),
+                     barrel_size=build_barrel_size(record))
 
 
 # TODO: Allow line-by-line aggregation; this is actually better served with JSON or YAML.

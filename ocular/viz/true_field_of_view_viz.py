@@ -1,10 +1,7 @@
-import numpy as np
-from ocular.viz.common.colors import Gruvbox
 import ocular.viz.common.fields_and_angles_of_view_axis as flda
 import ocular.viz.common.focal_length_axis as fla
-from ocular.core.eyepiece import BarrelSize, Eyepiece
-from ocular.core.optical_system import OpticalSystem, time_in_field_of_view_to_true_field_of_view, \
-    true_field_of_view_to_time_in_field_of_view
+from ocular.core.eyepiece import BarrelSize
+import ocular.core.optical_system as optsys
 
 # TODO: Add the field stop diameter as a third axis.
 # https://matplotlib.org/stable/gallery/axisartist/demo_parasite_axes.html
@@ -23,12 +20,12 @@ def make_plot(ax, telescope, eyepieces):
 
 
 def yaxis(ax, telescope):
-    secax_functions = (true_field_of_view_to_time_in_field_of_view, time_in_field_of_view_to_true_field_of_view)
+    secax_functions = (optsys.time_in_view, optsys.field_angle)
     flda.true_yaxis(ax,
                     telescope,
                     max_value=max_value(telescope),
                     label=r'$\Delta\theta_{tfov}$ ($\degree$)',
-                    max_time_function=true_field_of_view_to_time_in_field_of_view,
+                    max_time_function=optsys.time_in_view,
                     secax_functions=secax_functions)
 
 
@@ -45,4 +42,4 @@ def max_lines(ax, telescope):
 
 
 def max_value(telescope):
-    return telescope.max_true_field_of_view(barrel_size=BarrelSize.TWO_INCH, wall_thickness=0.0)
+    return telescope.max_true_field_of_view(barrel_size=telescope.barrel_size, wall_thickness=0.0)

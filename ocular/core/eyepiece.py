@@ -6,8 +6,12 @@ from ocular.util.tools import codeize
 
 
 class BarrelSize(Enum):
+    ONE_INCH = ('0.965"', 24.5)
     ONE_AND_A_QUARTER_INCH = ('1.25"', 31.75)
     TWO_INCH = ('2"', 50.80)
+    TWO_POINT_SEVEN_INCH = ('2.7"', 68.58)
+    THREE_INCH = ('3"', 76.20)
+    INF = (r'$\inf$', 1e3)
 
     def __init__(self, label, diameter):
         self.label = label

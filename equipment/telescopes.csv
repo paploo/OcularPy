@@ -1,4 +1,4 @@
-manufacturer_code,manufacturer_name,model,focal_length,objective_diameter
-ORI,Orion,XX12g,1500.0,305.0
-APR,Apertura,AD8,1200.0,203.0
-AWB,Astronomers Without Border,OneSky,650.0,130.0
+manufacturer_code,manufacturer_name,model,focal_length,objective_diameter,barrel_diameter
+ORI,Orion,XX12g,1500.0,305.0,50.80
+APR,Apertura,AD8,1200.0,203.0,50.80
+AWB,Astronomers Without Border,OneSky,650.0,130.0,31.75

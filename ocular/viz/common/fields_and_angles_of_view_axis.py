@@ -21,7 +21,7 @@ def system_scatter(ax, telescope, eyepieces, y_from_optical_system, label_func=N
             label = "{} {:.0f}$\degree$".format(os.eyepiece.manufacturer.code, os.eyepiece.apparent_field_of_view)
         else:
             label = label_func(os)
-        
+
         ax.annotate(label,
                     (os.eyepiece.focal_length, y_from_optical_system(os)),
                     textcoords="offset points",
@@ -55,15 +55,17 @@ def field_stop_lines(ax, telescope, y_calc_func):
         label = opt[0].label if (opt[1] == 0.0) else None
         ax.plot(fls, y_values, color=barrel_color(opt[0]).value, linestyle=opt[2], label=label)
 
+
 def system_afov_lines(ax, telescope, y_from_optical_system):
     def optical_system_func(focal_length, apparent_field_of_view):
-        eyepiece = Eyepiece.generic(focal_length, apparent_field_of_view, BarrelSize.TWO_INCH)
+        eyepiece = Eyepiece.generic(focal_length, apparent_field_of_view, telescope.barrel_size)
         os = OpticalSystem(telescope, eyepiece)
         return y_from_optical_system(os)
-    
+
     return afov_lines(ax, telescope, optical_system_func)
 
-def afov_lines(ax, telescope, y_calc_func):        
+
+def afov_lines(ax, telescope, y_calc_func):
     options = [
         (50, 'solid', Gruvbox.LIGHT_GREEN.alpha(0.3)),
         (60, 'solid', Gruvbox.LIGHT_GREEN.alpha(0.3)),
