@@ -1,8 +1,9 @@
+import math
+
 from ocular.viz.common.colors import Gruvbox as Color
 
-VIZ_FOCAL_LENGTH_MAX = 40
-VIZ_FOCAL_LENGTH_DELTA = 0.1
 
+VIZ_FOCAL_LENGTH_DELTA = 0.1
 
 
 def focal_length_xaxis(ax, telescope):
@@ -13,7 +14,8 @@ def focal_length_xaxis(ax, telescope):
 
 
 def focal_length_xaxis_setup(ax, telescope):
-    ax.set_xlim([0, VIZ_FOCAL_LENGTH_MAX])
+    max = max_focal_length(telescope)
+    ax.set_xlim([0, max])
     ax.set_xlabel(r'$f_L$ (mm)')
 
     sec_ax_functions = (telescope.exit_pupil_for_eyepiece_focal_length, telescope.eyepiece_focal_length_for_exit_pupil)
@@ -36,3 +38,7 @@ def min_focal_length_span(ax, telescope):
 def atmosphere_limit_focal_length_line(ax, telescope):
     atm_focal = telescope.eyepiece_focal_length_for_magnification(300.0)
     ax.axvline(atm_focal, color=Color.PURPLE.value, label=r'Atm Limit $f_L$')
+
+def max_focal_length(telescope, max_exit_pupil=8.0):
+    max_fl = telescope.eyepiece_focal_length_for_exit_pupil(max_exit_pupil)
+    return math.ceil(max_fl / 10.0) * 10.0

@@ -26,28 +26,29 @@ def main():
     telescope = telescopes.catalog['ORI-XX12G']
     #telescope = telescopes.catalog['APR-AD8']
     #telescope = telescopes.catalog['AWB-ONESKY']
+    #telescope = telescopes.catalog['MDE-LX90']
+
     eyepieces = eyepiece_lib.filter_favorites(all_favs).catalog.values()
+    #eyepieces = eyepiece_lib.catalog.values()
 
-    plt.rcParams['figure.figsize'] = [12,9]
-    print(plt.rcParams.get('figure.figsize'))
+    plt.rcParams['figure.figsize'] = [16, 11]
+    plt.rcParams['figure.subplot.hspace'] = 0.40
+    fig, axes = plt.subplots(2, 2)
+    apparent_field_of_view_viz.make_plot(axes[0][0], telescope, eyepieces)
+    field_stop_diameter_viz.make_plot(axes[0][1], telescope, eyepieces)
+    true_field_of_view_viz.make_plot(axes[1][0], telescope, eyepieces)
+    true_angle_of_view_viz.make_plot(axes[1][1], telescope, eyepieces)
+    plt.show()
 
-    fig, ax = plt.subplots()
-    #apparent_field_of_view_viz.make_plot(ax, telescope, eyepieces)
-    true_angle_of_view_viz.make_plot(ax, telescope, eyepieces)
-    #true_field_of_view_viz.make_plot(ax, telescope, eyepieces)
-    #field_stop_diameter_viz.make_plot(ax, telescope, eyepieces)
-    ax.legend()
-    plt.draw()
-
+    # plt.rcParams['figure.figsize'] = [12,9]
     # fig, ax = plt.subplots()
     # apparent_field_of_view_viz.make_plot(ax, telescope, eyepieces)
-    # #true_angle_of_view_viz.make_plot(ax, telescope, eyepieces)
-    # #true_field_of_view_viz.make_plot(ax, telescope, eyepieces)
-    # #field_stop_diameter_viz.make_plot(ax, telescope, eyepieces)
+    # true_angle_of_view_viz.make_plot(ax, telescope, eyepieces)
+    # true_field_of_view_viz.make_plot(ax, telescope, eyepieces)
+    # field_stop_diameter_viz.make_plot(ax, telescope, eyepieces)
     # ax.legend()
-    # plt.draw()
-
-    plt.show()
+    # plt.draw() # Way to draw multple plots in different windows.
+    # plt.show() # Only do this once.
 
 
 if __name__ == '__main__':

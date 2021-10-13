@@ -48,7 +48,7 @@ def field_stop_lines(ax, telescope, y_calc_func):
         (BarrelSize.ONE_AND_A_QUARTER_INCH, TYPICAL_WALL_THICKNESS, 'dashed')
     ]
 
-    fls = np.arange(fla.VIZ_FOCAL_LENGTH_DELTA, fla.VIZ_FOCAL_LENGTH_MAX, fla.VIZ_FOCAL_LENGTH_DELTA)
+    fls = np.arange(fla.VIZ_FOCAL_LENGTH_DELTA, fla.max_focal_length(telescope), fla.VIZ_FOCAL_LENGTH_DELTA)
 
     for opt in options:
         y_values = [y_calc_func(fl, barrel_size=opt[0], wall_thickness=opt[1]) for fl in fls]
@@ -71,10 +71,10 @@ def afov_lines(ax, telescope, y_calc_func):
         (60, 'solid', Gruvbox.LIGHT_GREEN.alpha(0.3)),
         (70, 'solid', Gruvbox.LIGHT_GREEN.alpha(0.3)),
         (80, 'solid', Gruvbox.LIGHT_GREEN.alpha(0.3)),
-        (110, 'solid', Gruvbox.LIGHT_GREEN.alpha(0.3))
+        (100, 'solid', Gruvbox.LIGHT_GREEN.alpha(0.3))
     ]
 
-    fls = np.arange(fla.VIZ_FOCAL_LENGTH_DELTA, fla.VIZ_FOCAL_LENGTH_MAX, fla.VIZ_FOCAL_LENGTH_DELTA)
+    fls = np.arange(fla.VIZ_FOCAL_LENGTH_DELTA, fla.max_focal_length(telescope), fla.VIZ_FOCAL_LENGTH_DELTA)
 
     for opt in options:
         y_values = [y_calc_func(fl, opt[0]) for fl in fls]
