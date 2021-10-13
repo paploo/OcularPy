@@ -5,7 +5,8 @@ import numpy as np
 from ocular.core.eyepiece import BarrelSize, Eyepiece, TYPICAL_WALL_THICKNESS
 import ocular.viz.common.focal_length_axis as fla
 from ocular.core.optical_system import OpticalSystem
-from ocular.viz.common.colors import Gruvbox, barrel_color
+from ocular.util.tools import snap
+from ocular.viz.common.colors import Gruvbox as Color, barrel_color
 
 
 def system_scatter(ax, telescope, eyepieces, y_from_optical_system, label_points=False, label_func=None):
@@ -22,12 +23,13 @@ def system_scatter(ax, telescope, eyepieces, y_from_optical_system, label_points
         else:
             label = label_func(os)
 
-        if label_points:
+        if label_points or True:
             ax.annotate(label,
                         (os.eyepiece.focal_length, y_from_optical_system(os)),
                         textcoords="offset points",
                         xytext=(0, 10),
-                        ha='center')
+                        ha='center',
+                        fontsize=8)
 
 
 def system_field_stop_lines(ax, telescope, y_from_optical_system):
@@ -68,11 +70,11 @@ def system_afov_lines(ax, telescope, y_from_optical_system):
 
 def afov_lines(ax, telescope, y_calc_func):
     options = [
-        (50, 'solid', Gruvbox.LIGHT_GREEN.alpha(0.3)),
-        (60, 'solid', Gruvbox.LIGHT_GREEN.alpha(0.3)),
-        (70, 'solid', Gruvbox.LIGHT_GREEN.alpha(0.3)),
-        (80, 'solid', Gruvbox.LIGHT_GREEN.alpha(0.3)),
-        (100, 'solid', Gruvbox.LIGHT_GREEN.alpha(0.3))
+        (50, 'solid', Color.LIGHT_GREEN.alpha(0.3)),
+        (60, 'solid', Color.LIGHT_GREEN.alpha(0.3)),
+        (70, 'solid', Color.LIGHT_GREEN.alpha(0.3)),
+        (80, 'solid', Color.LIGHT_GREEN.alpha(0.3)),
+        (100, 'solid', Color.LIGHT_GREEN.alpha(0.3))
     ]
 
     fls = np.arange(fla.VIZ_FOCAL_LENGTH_DELTA, fla.max_focal_length(telescope), fla.VIZ_FOCAL_LENGTH_DELTA)
@@ -84,7 +86,7 @@ def afov_lines(ax, telescope, y_calc_func):
 
 
 def true_yaxis(ax, telescope, max_value, label, max_time_function, secax_functions, max_granularity=0.5):
-    snapped_max = math.ceil(max_value / max_granularity) * max_granularity
+    snapped_max = snap(max_value, max_granularity)
     ax.set_ylim(0.0, snapped_max)
     ax.set_ylabel(label)
 

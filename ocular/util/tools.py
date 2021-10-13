@@ -1,3 +1,4 @@
+import math
 import re
 
 
@@ -10,3 +11,15 @@ def codeize(string, placeholder='_', upper=True):
     code = re.sub('[^A-Za-z0-9_-]', '', code)
     code = re.sub('\s+', placeholder, code)
     return code.upper() if upper else code
+
+
+def snap(value, granularity):
+    return math.ceil(value / granularity) * granularity
+
+
+def min_by(iterable, transform):
+    return min([transform(x) for x in iterable])
+
+
+def max_by(iterable, transform):
+    return max([transform(x) for x in iterable])

@@ -2,7 +2,6 @@ import numpy as np
 
 import ocular.viz.common.fields_and_angles_of_view_axis as flda
 import ocular.viz.common.focal_length_axis as fla
-from ocular.core.eyepiece import BarrelSize
 import ocular.core.optical_system as optsys
 from ocular.core.telescope import true_angle_of_view, field_stop_diameter
 
