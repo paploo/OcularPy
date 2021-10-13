@@ -35,7 +35,8 @@ class DevApp:
     def telescopes(self):
         return [
             self.telescope_lib['ORI-XX12G'],
-            self.telescope_lib['APR-AD8']
+            self.telescope_lib['APR-AD8'],
+            self.telescope_lib['AWB-ONESKY']
         ]
 
     def eyepieces(self):

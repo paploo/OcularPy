@@ -12,8 +12,8 @@ def make_plot(ax, telescope, eyepieces):
     ax.set_title("Field Stop Diameter")
     fla.focal_length_xaxis(ax, telescope)
     yaxis(ax, telescope)
-    max_lines(ax, telescope)
     afov_lines(ax, telescope)
+    max_lines(ax, telescope)
     scatter(ax, telescope, eyepieces)
 
 

@@ -39,6 +39,7 @@ def atmosphere_limit_focal_length_line(ax, telescope):
     atm_focal = telescope.eyepiece_focal_length_for_magnification(300.0)
     ax.axvline(atm_focal, color=Color.PURPLE.value, label=r'Atm Limit $f_L$')
 
+
 def max_focal_length(telescope, max_exit_pupil=8.0):
     max_fl = telescope.eyepiece_focal_length_for_exit_pupil(max_exit_pupil)
-    return math.ceil(max_fl / 10.0) * 10.0
+    return max_fl

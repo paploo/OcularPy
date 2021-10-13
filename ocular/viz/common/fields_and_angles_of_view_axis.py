@@ -8,7 +8,7 @@ from ocular.core.optical_system import OpticalSystem
 from ocular.viz.common.colors import Gruvbox, barrel_color
 
 
-def system_scatter(ax, telescope, eyepieces, y_from_optical_system, label_func=None):
+def system_scatter(ax, telescope, eyepieces, y_from_optical_system, label_points=False, label_func=None):
     optical_systems = OpticalSystem.combinations(telescope, eyepieces)
     x = [os.eyepiece.focal_length for os in optical_systems]
     y = [y_from_optical_system(os) for os in optical_systems]
@@ -17,16 +17,17 @@ def system_scatter(ax, telescope, eyepieces, y_from_optical_system, label_func=N
     ax.scatter(x, y, s=s, c=c)
 
     for os in optical_systems:
-        if (label_func is None):
+        if label_func is None:
             label = "{} {:.0f}$\degree$".format(os.eyepiece.manufacturer.code, os.eyepiece.apparent_field_of_view)
         else:
             label = label_func(os)
 
-        ax.annotate(label,
-                    (os.eyepiece.focal_length, y_from_optical_system(os)),
-                    textcoords="offset points",
-                    xytext=(0, 10),
-                    ha='center')
+        if label_points:
+            ax.annotate(label,
+                        (os.eyepiece.focal_length, y_from_optical_system(os)),
+                        textcoords="offset points",
+                        xytext=(0, 10),
+                        ha='center')
 
 
 def system_field_stop_lines(ax, telescope, y_from_optical_system):
